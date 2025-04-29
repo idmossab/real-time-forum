@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "go",
+            "name": "debug users_services.go",
+            "request": "launch",
+            "mode": "auto",
+            "args": [],
+            "program": "/home/bendoe/Desktop/real-time-forum/internal/service/users_services.go"
+        }
+    ]
+}
