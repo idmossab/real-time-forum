@@ -1,10 +1,19 @@
-package server
+package main
 
-import(
-
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+	"real_time_forum/internal/database"
+	"real_time_forum/internal/model"
+	"real_time_forum/internal/presentation"
+	"real_time_forum/internal/repository"
+	"real_time_forum/internal/router"
+	"real_time_forum/internal/service"
 )
 
-import "real_time_forum/internal/model"
+var databaseConnection *sql.DB
+var mainError error
 
 var TestUser = &model.User{
 	Id:        1,
@@ -17,8 +26,31 @@ var TestUser = &model.User{
 	Password:  "securePassword123!",
 }
 
-
-
-func init(){
-
+func init() {
+	databaseConnection, mainError = database.Connect()
+	if mainError == nil {
+		mainError = database.Migrate(databaseConnection)
+	}
 }
+
+func main() {
+	if mainError != nil {
+		fmt.Println("Error connecting to database: %w", mainError)
+		return
+	}
+	defer databaseConnection.Close()
+	fmt.Println("connected successfully")
+	fmt.Println(TestUser)
+	userRepository := repository.Users_repository{Database: databaseConnection}
+	userService := service.User_services{Repository: userRepository}
+	userHandler := presentation.UsersHandler{Service: userService}
+	mainRouter := router.NewRouter()
+	mainRouter.AddRoute("post", "add", userHandler.UserRegistrationHandler)
+	fmt.Println("listenning on port: http://localhost:8080/")
+	mainError = http.ListenAndServe(":8080", mainRouter)
+	if mainError != nil {
+		fmt.Println("Error: %w", mainError)
+		return
+	}
+	}
+

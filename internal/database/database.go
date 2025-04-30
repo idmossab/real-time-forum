@@ -7,10 +7,10 @@ import(
 
 // Connect to my database:
 func Connect() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "real_time_forum.db")
+	db, err := sql.Open("sqlite3", "../../internal/database/real_time_forum.db")
 	if err != nil {
 		return nil, err
 	}
-	defer db.Close()
+	// defer db.Close()
 	return db, nil
 }

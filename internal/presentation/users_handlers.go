@@ -7,7 +7,7 @@ import (
 
 // Create a structure for the task haandler:
 type UsersHandler struct {
-	service.UserServices
+	Service service.UserServices
 }
 
 // Handle the user registration:
