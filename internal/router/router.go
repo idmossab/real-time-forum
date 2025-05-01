@@ -1,7 +1,9 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 )
 
 type Router struct {
@@ -23,10 +25,11 @@ router.Routes[method][path] = handler
 
 // make the router satisfy the http handler:
 func (router *Router)ServeHTTP(wr http.ResponseWriter, rq *http.Request){
-if router.Routes[rq.Method] == nil {
+	fmt.Printf("the path: %s => the method: %s", rq.Method, rq.URL.Path[1:])
+if router.Routes[strings.ToLower(rq.Method)] == nil {
 	http.Error(wr, "Method not allowed", http.StatusMethodNotAllowed)
 	return
-} else if router.Routes[rq.Method][rq.URL.Path] == nil {
+} else if router.Routes[rq.Method][rq.URL.Path[1:]] == nil {
 	http.NotFound(wr, rq)
 	return
 }else {

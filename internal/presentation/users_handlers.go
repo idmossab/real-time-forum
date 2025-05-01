@@ -1,7 +1,11 @@
 package presentation
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
+
+	"real_time_forum/internal/model"
 	"real_time_forum/internal/service"
 )
 
@@ -11,6 +15,17 @@ type UsersHandler struct {
 }
 
 // Handle the user registration:
-func (handler UsersHandler) UserRegistrationHandler(rs http.ResponseWriter, rq *http.Request){
-	
+func (handler UsersHandler) UserRegistrationHandler(wr http.ResponseWriter, rq *http.Request) {
+	fmt.Printf("%v", rq.Body)
+	if rq.Method == "post" {
+		user := &model.User{}
+		if err := json.NewDecoder(rq.Body).Decode(user); err != nil {
+			http.Error(wr, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		wr.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(wr).Encode(*user)
+		return
+	}
+	http.Error(wr, "Registration has failed.", http.StatusInternalServerError)
 }

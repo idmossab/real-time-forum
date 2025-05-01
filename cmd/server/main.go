@@ -40,7 +40,6 @@ func main() {
 	}
 	defer databaseConnection.Close()
 	fmt.Println("connected successfully")
-	fmt.Println(TestUser)
 	userRepository := repository.Users_repository{Database: databaseConnection}
 	userService := service.User_services{Repository: userRepository}
 	userHandler := presentation.UsersHandler{Service: userService}
