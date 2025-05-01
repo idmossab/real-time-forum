@@ -16,7 +16,7 @@ type UsersHandler struct {
 
 // Handle the user registration:
 func (handler UsersHandler) UserRegistrationHandler(wr http.ResponseWriter, rq *http.Request) {
-	fmt.Printf("%v", rq.Body)
+	fmt.Printf("")
 	if rq.Method == "post" {
 		user := &model.User{}
 		if err := json.NewDecoder(rq.Body).Decode(user); err != nil {

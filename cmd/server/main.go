@@ -40,9 +40,11 @@ func main() {
 	}
 	defer databaseConnection.Close()
 	fmt.Println("connected successfully")
+
 	userRepository := repository.Users_repository{Database: databaseConnection}
 	userService := service.User_services{Repository: userRepository}
 	userHandler := presentation.UsersHandler{Service: userService}
+	
 	mainRouter := router.NewRouter()
 	mainRouter.AddRoute("post", "add", userHandler.UserRegistrationHandler)
 	fmt.Println("listenning on port: http://localhost:8080/")

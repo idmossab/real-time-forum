@@ -11,28 +11,31 @@ type Router struct {
 }
 
 // Instantiate a new router;
-func NewRouter()*Router{
-return &Router{
-	Routes: make(map[string]map[string]http.HandlerFunc),
-}
+func NewRouter() *Router {
+	return &Router{
+		Routes: make(map[string]map[string]http.HandlerFunc),
+	}
 }
 
 // Add a new route:
-func(router *Router) AddRoute(method, path string, handler http.HandlerFunc){
-router.Routes[method] = make(map[string]http.HandlerFunc)
-router.Routes[method][path] = handler
+func (router *Router) AddRoute(method, path string, handler http.HandlerFunc) {
+	if _, ok := router.Routes[method]; !ok {
+		router.Routes[method] = make(map[string]http.HandlerFunc)
+	}
+	router.Routes[method][path] = handler
 }
 
 // make the router satisfy the http handler:
-func (router *Router)ServeHTTP(wr http.ResponseWriter, rq *http.Request){
-	fmt.Printf("the path: %s => the method: %s", rq.Method, rq.URL.Path[1:])
-if router.Routes[strings.ToLower(rq.Method)] == nil {
-	http.Error(wr, "Method not allowed", http.StatusMethodNotAllowed)
-	return
-} else if router.Routes[rq.Method][rq.URL.Path[1:]] == nil {
-	http.NotFound(wr, rq)
-	return
-}else {
-	router.Routes[rq.Method][rq.URL.Path](wr, rq)
-}
+// Handle incoming HTTP requests
+func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	method := strings.ToLower(r.Method)
+	path := r.URL.Path
+	fmt.Printf("method: %v, path: %v", method, path)
+	if handlers, ok := router.Routes[method]; ok {
+		if handler, ok := handlers[path]; ok {
+			handler(w, r)
+			return
+		}
+	}
+	http.NotFound(w, r)
 }

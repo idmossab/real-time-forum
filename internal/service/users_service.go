@@ -12,7 +12,7 @@ type UserServices interface {
 
 // Create a structute to go ahead with the implementation:
 type User_services struct {
-	Repository repository.Users_repository
+	Repository repository.UsersRepository
 }
 
 // register a new user:
