@@ -16,15 +16,15 @@ type UsersHandler struct {
 
 // Handle the user registration:
 func (handler UsersHandler) UserRegistrationHandler(wr http.ResponseWriter, rq *http.Request) {
-	fmt.Printf("")
-	if rq.Method == "post" {
-		user := &model.User{}
-		if err := json.NewDecoder(rq.Body).Decode(user); err != nil {
+	if rq.Method == "POST" {
+		user := model.User{}
+		if err := json.NewDecoder(rq.Body).Decode(&user); err != nil {
 			http.Error(wr, "Invalid request body", http.StatusBadRequest)
 			return
 		}
+		fmt.Println(user)
 		wr.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(wr).Encode(*user)
+		json.NewEncoder(wr).Encode(&user)
 		return
 	}
 	http.Error(wr, "Registration has failed.", http.StatusInternalServerError)
