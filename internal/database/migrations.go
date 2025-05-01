@@ -17,7 +17,7 @@ const schema = `
     E_MAIL TEXT NOT NULL UNIQUE,
     PASSWORD TEXT NOT NULL);
     
-    --create sessions table :
+    -- create sessions table :
     CREATE TABLE IF NOT EXISTS sessions(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -26,7 +26,7 @@ const schema = `
     expires_at DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(ID) ON DELETE CASCADE);
 
-    --create posts table :
+    -- create posts table :
     CREATE TABLE IF NOT EXISTS posts (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -36,7 +36,7 @@ const schema = `
     user_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(ID) ON DELETE CASCADE);
 
-    --create categories table :
+    -- create categories table :
     CREATE TABLE IF NOT EXISTS categories (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE NOT NULL);
