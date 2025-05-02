@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
-	"real_time_forum/internal/database"
+	"real_time_forum/database"
 	"real_time_forum/internal/model"
 	"real_time_forum/internal/presentation"
 	"real_time_forum/internal/repository"
