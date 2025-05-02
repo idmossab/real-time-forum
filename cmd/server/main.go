@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"real_time_forum/database"
 	"real_time_forum/internal/model"
-	"real_time_forum/internal/presentation"
+	"real_time_forum/internal/handlers"
 	"real_time_forum/internal/repository"
 	"real_time_forum/internal/router"
 	"real_time_forum/internal/service"
