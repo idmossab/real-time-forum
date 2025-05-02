@@ -9,13 +9,13 @@ const schema = `
     -- create users table:
     CREATE TABLE IF NOT EXISTS users(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    NICK_NAME TEXT UNIQUE NOT NULL,
-    AGE INTEGER CHECK(AGE > 0 AND AGE < 100),
-    GENDER TEXT NOT NULL, 
-    FIRST_NAME TEXT NOT NULL,
-    LAST_NAME TEXT NOT NULL,
-    E_MAIL TEXT NOT NULL UNIQUE,
-    PASSWORD TEXT NOT NULL);
+    nick_name TEXT UNIQUE NOT NULL,
+    age INTEGER CHECK(age > 0 AND age < 100),
+    gender TEXT NOT NULL, 
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL);
     
     -- create sessions table :
     CREATE TABLE IF NOT EXISTS sessions(

@@ -17,6 +17,10 @@ type Users_repository struct {
 
 // start the struct/interface implementation:
 func (user_repo Users_repository) RegisterUser(user *model.User)error{
-	
-return nil
+	query := `
+	INSERT INTO users (nick_name, age, gender, first_name, last_name, email, password)
+	VALUES (?, ?, ?, ?, ?, ?, ?)
+	`
+	_, err := user_repo.Database.Exec(query, user.NickName, user.Age, user.Gender, user.FirstName, user.LastName, user.Email, user.Password)
+	return err
 }
