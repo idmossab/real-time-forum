@@ -5,22 +5,25 @@ import (
 	"real_time_forum/internal/model"
 )
 
-// Create an interface for decoupled implementation:
+// UsersRepository يحدّد الدوال المتاحة للتعامل مع جدول المستخدمين.
 type UsersRepository interface {
-	RegisterUser(user *model.User) error
+	RegisterUser(u *model.User) error
 }
 
-// Create the the structure that will implement the userRepository interface:
-type Users_repository struct {
-	Database *sql.DB
+// UsersRepositorySqlite هو التنفيذ الخاص بقاعدة SQLite.
+type UsersRepositorySqlite struct {
+	DB *sql.DB
 }
 
-// start the struct/interface implementation:
-func (user_repo Users_repository) RegisterUser(user *model.User)error{
-	query := `
-	INSERT INTO users (nick_name, age, gender, first_name, last_name, email, password)
-	VALUES (?, ?, ?, ?, ?, ?, ?)
+// RegisterUser يضيف مستخدماً جديداً إلى قاعدة البيانات.
+func (r *UsersRepositorySqlite) RegisterUser(u *model.User) error {
+	const query = `
+		INSERT INTO users (nick_name, age, gender, first_name, last_name, email, password)
+		VALUES (?, ?, ?, ?, ?, ?, ?);
 	`
-	_, err := user_repo.Database.Exec(query, user.NickName, user.Age, user.Gender, user.FirstName, user.LastName, user.Email, user.Password)
+	_, err := r.DB.Exec(query,
+		u.NickName, u.Age, u.Gender,
+		u.FirstName, u.LastName, u.Email, u.Password,
+	)
 	return err
 }
