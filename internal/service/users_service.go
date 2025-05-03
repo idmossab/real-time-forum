@@ -1,22 +1,36 @@
 package service
 
 import (
+	"errors"
 	"real_time_forum/internal/model"
 	"real_time_forum/internal/repository"
+	"real_time_forum/internal/utils"
+
 )
 
-// Create an interface to ease decoupling logic/implementation from functionality:
 type UserServices interface {
-	RegisterUser(age int, gender, firstName, lastName, email, passwrd string) error
+	RegisterUser(user *model.User) error
 }
 
-// Create a structute to go ahead with the implementation:
-type User_services struct {
+type UserService struct {
 	Repository repository.UsersRepository
 }
 
-// register a new user:
-func (user_serc User_services) RegisterUser(age int, gender, firstName, lastName, email, password string) error {
-	user := &model.User{NickName: string(firstName[0]) + lastName, Age: age, FirstName: firstName, LastName: lastName, Email: email, Password: password}
-	return user_serc.Repository.RegisterUser(user)
+func (us *UserService) RegisterUser(user *model.User) error {
+	if user.Email == "" || user.Password == "" {
+		return errors.New("email and password are required")
+	}
+		// Hash the password before storing
+		hashedPassword, err := utils.HashPassword(user.Password)
+		if err != nil {
+			return err
+		}
+		user.Password = hashedPassword
+	return us.Repository.RegisterUser(user)
+}
+
+func NewUserService(repo repository.UsersRepository) *UserService {
+	return &UserService{
+		Repository: repo,
+	}
 }
