@@ -12,6 +12,7 @@ func NewRouter(userHandler *handler.UserHandler) http.Handler {
 	
 	// Register API routes
 	mux.HandleFunc("/api/register", userHandler.Register)
+	mux.HandleFunc("/api/login", userHandler.Login)
 	
 	// You can add more routes here as your application grows
 	
