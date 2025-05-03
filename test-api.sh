@@ -69,6 +69,6 @@ main() {
     
     echo -e "\n${GREEN}======= TESTS COMPLETED =======${NC}"
 }
-
+``
 # Run the main function
 main
